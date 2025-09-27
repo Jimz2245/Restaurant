@@ -4,7 +4,7 @@ import java.util.List;
 
 public class CartService 
 {
-    private List<CartItem> cart = new ArrayList<>();
+    private List<CartItem> cart =   new ArrayList<>();
 
     public void addItem(MenuItem menuItem, int quantity) 
     {
