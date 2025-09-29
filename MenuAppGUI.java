@@ -2,10 +2,9 @@ import javax.swing.*;
 import java.awt.Color;
 
 public class MenuAppGUI {
-    public static void main(String[] args) 
-    {
+    public static void main(String[] args) {
         JFrame frame = new JFrame("Foodie App");
-        frame.setSize(400, 500);
+        frame.setSize(1440, 1080);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null); 
         frame.setVisible(true);
@@ -14,8 +13,9 @@ public class MenuAppGUI {
         menuLabel.setBounds(50, 20, 100, 20);
         frame.add(menuLabel);
 
+        // ==== Cart moved to right side ====
         JLabel cartLabel = new JLabel("🛒 Your Cart");
-        cartLabel.setBounds(50, 200, 100, 20);
+        cartLabel.setBounds(1100, 20, 150, 20);   // moved to right
         frame.add(cartLabel);
 
         String[] menuItems = {"🍔 Burger - $5.99", "🍕 Pizza - $8.99", "🍣 Sushi - $12.99"};
@@ -25,7 +25,7 @@ public class MenuAppGUI {
 
         DefaultListModel<String> cartModel = new DefaultListModel<>();
         JList<String> cartList = new JList<>(cartModel);
-        cartList.setBounds(50, 220, 300, 150);
+        cartList.setBounds(1100, 50, 300, 250);   // cart list on right
         frame.add(cartList);
 
         frame.getContentPane().setBackground(Color.LIGHT_GRAY);
@@ -41,36 +41,31 @@ public class MenuAppGUI {
 
         addButton.addActionListener(e -> {
             int selectedIndex = menuList.getSelectedIndex();
-            if (selectedIndex != -1) 
-            {
+            if (selectedIndex != -1) {
                 String selectedItem = menuItems[selectedIndex];
                 int qty = Integer.parseInt(qtyField.getText());
-                for (int i = 0; i < qty; i++) 
-                {
+                for (int i = 0; i < qty; i++) {
                     cartModel.addElement(selectedItem);
                 }
-                JOptionPane.showMessageDialog(frame, qty + selectedItem + " added to your cart!");
-            } 
-            else 
-            {
+                JOptionPane.showMessageDialog(frame, qty + " " + selectedItem + " added to your cart!");
+            } else {
                 JOptionPane.showMessageDialog(frame, "Please select an item first.");
             }
         });
 
+        // ==== Checkout button also on right ====
         JButton checkoutButton = new JButton("Checkout");
-        checkoutButton.setBounds(150, 400, 100, 30);
+        checkoutButton.setBounds(1180, 320, 120, 30); // moved under cart
         frame.add(checkoutButton);
 
         checkoutButton.addActionListener(e -> {
-            if (cartModel.isEmpty()) 
-            {
+            if (cartModel.isEmpty()) {
                 JOptionPane.showMessageDialog(frame, "Your cart is empty!");
                 return;
             }
 
             double subtotal = 0;
-            for (int i = 0; i < cartModel.size(); i++) 
-            {
+            for (int i = 0; i < cartModel.size(); i++) {
                 String cartItem = cartModel.get(i);
                 String[] parts = cartItem.split("\\$");
                 double price = Double.parseDouble(parts[1]);
@@ -91,15 +86,13 @@ public class MenuAppGUI {
             );
 
             double tipPercent = 0;
-            switch(tipChoice) 
-            {
+            switch (tipChoice) {
                 case 0: tipPercent = 0.15; break;
                 case 1: tipPercent = 0.18; break;
                 case 2: tipPercent = 0.20; break;
                 case 3:
                     String customTipStr = JOptionPane.showInputDialog(frame, "Enter tip percentage (e.g., 22 for 22%):");
-                    try 
-                    {
+                    try {
                         tipPercent = Double.parseDouble(customTipStr) / 100.0;
                     } catch (NumberFormatException ex) {
                         JOptionPane.showMessageDialog(frame, "Invalid input. Using 0% tip.");
@@ -112,8 +105,7 @@ public class MenuAppGUI {
             double totalWithTip = subtotal * (1 + 0.08875 + tipPercent);
 
             StringBuilder receipt = new StringBuilder("Your Cart:\n");
-            for (int i = 0; i < cartModel.size(); i++) 
-            {
+            for (int i = 0; i < cartModel.size(); i++) {
                 receipt.append(cartModel.get(i)).append("\n");
             }
             receipt.append("\nSubtotal: $").append(String.format("%.2f", subtotal));
@@ -123,6 +115,5 @@ public class MenuAppGUI {
 
             JOptionPane.showMessageDialog(frame, receipt.toString());
         });
-
     }
 }
